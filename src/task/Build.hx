@@ -37,11 +37,11 @@ class Build extends mtask.core.BuildBase
 	{
 		target.name = build.project.id;
 		target.version = build.project.version;
-		target.versionDescription = "Initial release.";
+		target.versionDescription = "Initial release. See http://github.com/massiveinteractive/msignal for documentation and examples.";
 		target.url = "http://github.com/massiveinteractive/msignal";
 		target.license.organization = "Massive Interactive";
 		target.username = "massive";
-		target.description = "MassiveSignal is a type safe port of Robert Penner’s AS3 Signals leveraging Haxe generics.";
+		target.description = "MassiveSignal is a type safe port of Robert Penner's AS3 Signals leveraging Haxe generics.";
 		target.addTag("cross");
 		target.addTag("utility");
 		target.addTag("massive");

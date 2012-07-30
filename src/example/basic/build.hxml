@@ -1,0 +1,18 @@
+-main BasicExample
+# -lib msignal
+-cp /ws/msignal/src/lib
+-js example-js/index.js
+
+--next
+
+-main BasicExample
+# -lib msignal
+-cp /ws/msignal/src/lib
+-swf example-swf/index.swf
+
+--next
+
+-main BasicExample
+# -lib msignal
+-cp /ws/msignal/src/lib
+-neko example-neko.n

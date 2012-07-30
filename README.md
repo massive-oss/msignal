@@ -11,6 +11,8 @@ Benefits:
 * Type safe signature for dispatching and observer handlers
 * Typing excluded from output (lighter, cleaner code without compromising integrity)
 
+You can download some examples of msignal usage [here](https://github.com/downloads/massiveinteractive/msignal/examples.zip).
+
 ### Importing
 
 All required classes can be imported through msignal.Signal

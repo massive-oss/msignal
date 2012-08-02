@@ -112,6 +112,7 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 	public function new(signal:Dynamic, listener:TEvent -> Void, once:Bool=false, priority:Int=0)
 	{
 		super(signal, listener, once, priority);
+		type = -1;
 	}
 
 	/**
@@ -122,7 +123,7 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 	{
 		if (!enabled) return;
 		if (once) remove();
-		if (Type.enumIndex(value1.type) != type) return;
+		if (type > -1 && Type.enumIndex(value1.type) != type) return;
 		listener(value1);
 	}
 

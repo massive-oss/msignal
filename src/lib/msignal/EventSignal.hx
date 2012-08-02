@@ -24,14 +24,17 @@ package msignal;
 
 import msignal.Signal;
 
-class EventSignal<TTarget, TEvent:Event<TTarget>> extends Signal1<TEvent>
+class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType>>
 {
+	var types:Array<Array<Dynamic>>;
+
 	public var target(default, set_target):TTarget;
 
 	public function new(target:TTarget=null)
 	{
 		super(Event);
 		this.target = target;
+		this.types = [];
 	}
 
 	function set_target(value:TTarget):TTarget
@@ -42,7 +45,12 @@ class EventSignal<TTarget, TEvent:Event<TTarget>> extends Signal1<TEvent>
 		return target;
 	}
 
-	override public function dispatch(event:TEvent):Void
+	public function event(type:TType)
+	{
+		dispatch(new Event(type));
+	}
+
+	override public function dispatch(event:Event<TTarget, TType>):Void
 	{
 		if (event.target != null)
 		{
@@ -53,6 +61,18 @@ class EventSignal<TTarget, TEvent:Event<TTarget>> extends Signal1<TEvent>
 		event.currentTarget = target;
 		event.signal = this;
 		
+		// broadcast to types
+
+		var index = Type.enumIndex(event.type);
+		if (types[index] != null)
+		{
+			var listeners:Array<Dynamic> = types[index];
+			for (listener in listeners)
+			{
+				Reflect.callMethod(null, listener, Type.enumParameters(event.type));
+			}
+		}
+
 		// Broadcast to listeners.
 		var slotsToProcess = slots;
 
@@ -78,6 +98,30 @@ class EventSignal<TTarget, TEvent:Event<TTarget>> extends Signal1<TEvent>
 
 				// onEventBubbled() can stop the bubbling by returning false.
 				if (!handler.onEventBubbled(event)) break;
+			}
+		}
+	}
+
+	public function addForType(listener:Dynamic, type:EnumValue)
+	{
+		var index = Type.enumIndex(type);
+		if (types[index] == null) types[index] = [listener];
+		else types[index].push(listener);
+	}
+
+	public function removeForType(listener:Dynamic, type:EnumValue)
+	{
+		var index = Type.enumIndex(type);
+		if (types[index] != null)
+		{
+			var listeners:Array<Dynamic> = types[index];
+			for (i in 0...listeners.length)
+			{
+				if (listeners[i] == listener)
+				{
+					listeners.splice(i, 1);
+					break;
+				}
 			}
 		}
 	}

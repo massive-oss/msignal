@@ -60,7 +60,7 @@ class SlotTest
 		signal.dispatch();
 	}
 
-	function checkGenericEvent(event:Event<Dynamic>):Void
+	function checkGenericEvent(event:Event<Dynamic, Dynamic>):Void
 	{
 		Assert.isNull(event.signal);//'event.signal is not set by Signal'
 		Assert.isNull(event.target);//'event.target is not set by Signal'

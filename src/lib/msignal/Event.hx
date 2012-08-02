@@ -22,20 +22,23 @@ SOFTWARE.
 
 package msignal;
 
-class Event<TTarget>
+class Event<TTarget, TType:EnumValue>
 {
-	public var bubbles:Bool;
+	public var type:TType;
 	public var target:TTarget;
-	public var currentTarget:TTarget;
-	public var signal:EventSignal<TTarget, Dynamic>;
+	public var signal:EventSignal<TTarget, TType>;
 
-	public function new(bubbles:Bool=false)
+	public var bubbles:Bool;
+	public var currentTarget:TTarget;
+
+	public function new(type:TType, bubbles:Bool=false)
 	{
+		this.type = type;
 		this.bubbles = bubbles;
 	}
 
 	public function clone()
 	{
-		return new Event(bubbles);
+		return new Event(type, bubbles);
 	}
 }

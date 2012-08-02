@@ -29,7 +29,7 @@ class EventSignalTest
 	public function new() {}
 
 	var target:MyTarget;
-	var signal:EventSignal<MyTarget, MyEvent>;
+	var signal:EventSignal<MyTarget, MyEventType>;
 
 	@Before
 	public function before()
@@ -47,7 +47,7 @@ class EventSignalTest
 	@Test
 	public function dispatch_sets_event_target()
 	{
-		var event = new MyEvent();
+		var event = new MyEvent(started);
 		signal.dispatch(event);
 		Assert.isTrue(event.target == target);
 	}
@@ -55,7 +55,7 @@ class EventSignalTest
 	@Test
 	public function dispatch_event_with_target_clones_event()
 	{
-		var event = new MyEvent();
+		var event = new MyEvent(started);
 		event.target = new MyTarget();
 
 		signal.dispatch(event);
@@ -71,10 +71,11 @@ class MyTarget
 	public function new(){}
 }
 
-class MyEvent extends Event<MyTarget>
+typedef MyEvent = Event<MyTarget, MyEventType>;
+
+enum MyEventType
 {
-	public function new()
-	{
-		super(false);
-	}
+	started;
+	progressed(value:Float);
+	completed;
 }

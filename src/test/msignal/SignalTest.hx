@@ -25,7 +25,7 @@ package msignal;
 import massive.munit.Assert;
 import msignal.Signal;
 
-typedef DynamicEvent = Event<Dynamic>;
+typedef DynamicEvent = Event<Dynamic, Dynamic>;
 
 class SignalTest
 {
@@ -266,7 +266,7 @@ class SignalTest
 	public function dispatch_should_pass_event_to_listener_but_not_set_signal_or_target_properties():Void
 	{
 		signal1.add(checkGenericEvent);
-		signal1.dispatch(new DynamicEvent());
+		signal1.dispatch(new DynamicEvent(null));
 		Assert.isTrue(verifiableHandlerCalled);
 	}
 	

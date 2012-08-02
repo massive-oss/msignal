@@ -69,7 +69,7 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 			var listeners:Array<Dynamic> = types[index];
 			for (listener in listeners)
 			{
-				Reflect.callMethod(null, listener, Type.enumParameters(event.type));
+				Reflect.callMethod(null, listener, [event]);
 			}
 		}
 
@@ -102,14 +102,14 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 		}
 	}
 
-	public function addForType(listener:Dynamic, type:EnumValue)
+	public function addForType(listener:Event<TTarget, TType> -> Void, type:EnumValue)
 	{
 		var index = Type.enumIndex(type);
 		if (types[index] == null) types[index] = [listener];
 		else types[index].push(listener);
 	}
 
-	public function removeForType(listener:Dynamic, type:EnumValue)
+	public function removeForType(listener:Event<TTarget, TType> -> Void, type:EnumValue)
 	{
 		var index = Type.enumIndex(type);
 		if (types[index] != null)

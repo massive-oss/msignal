@@ -64,6 +64,37 @@ class EventSignalTest
 			Assert.isFalse(e == event);
 		});
 	}
+
+	@Test
+	public function add_for_type_filters_events_on_type()
+	{
+		var startedDispatched = false;
+		var completedDispatched = false;
+
+		signal.addForType(function(e){
+			startedDispatched = true;
+		}, started);
+
+		signal.addForType(function(e){
+			completedDispatched = true;
+		}, completed);
+
+		signal.dispatch(new MyEvent(started));
+		Assert.isTrue(startedDispatched);
+		Assert.isFalse(completedDispatched);
+	}
+
+	@Test function remove_for_type_removes_listener()
+	{
+		var startedDispatched = false;
+		var listener = function(e){
+			startedDispatched = true;
+		}
+		signal.addForType(listener, started);
+		signal.removeForType(listener, started);
+		signal.dispatch(new MyEvent(completed));
+		Assert.isFalse(startedDispatched);
+	}
 }
 
 class MyTarget

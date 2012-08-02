@@ -47,7 +47,7 @@ class EventSignalTest
 	@Test
 	public function dispatch_sets_event_target()
 	{
-		var event = new MyEvent(started);
+		var event = new Event(started);
 		signal.dispatch(event);
 		Assert.isTrue(event.target == target);
 	}
@@ -55,7 +55,7 @@ class EventSignalTest
 	@Test
 	public function dispatch_event_with_target_clones_event()
 	{
-		var event = new MyEvent(started);
+		var event = new Event(started);
 		event.target = new MyTarget();
 
 		signal.dispatch(event);
@@ -71,15 +71,15 @@ class EventSignalTest
 		var startedDispatched = false;
 		var completedDispatched = false;
 
-		signal.addForType(function(e){
+		signal.add(function(e){
 			startedDispatched = true;
-		}, started);
+		}).forType(started);
 
-		signal.addForType(function(e){
+		signal.add(function(e){
 			completedDispatched = true;
-		}, completed);
+		}).forType(completed);
 
-		signal.dispatch(new MyEvent(started));
+		signal.event(started);
 		Assert.isTrue(startedDispatched);
 		Assert.isFalse(completedDispatched);
 	}
@@ -90,10 +90,22 @@ class EventSignalTest
 		var listener = function(e){
 			startedDispatched = true;
 		}
-		signal.addForType(listener, started);
-		signal.removeForType(listener, started);
-		signal.dispatch(new MyEvent(completed));
+		signal.add(listener).forType(started);
+		signal.remove(listener);
+		signal.event(completed);
 		Assert.isFalse(startedDispatched);
+	}
+
+	@Test function add_once_for_type_removes_after_dispatch()
+	{
+		var startedDispatched = 0;
+		var listener = function(e){
+			startedDispatched += 1;
+		}
+		signal.addOnce(listener).forType(started);
+		signal.event(started);
+		signal.event(started);
+		Assert.areEqual(1, startedDispatched);
 	}
 }
 
@@ -101,8 +113,6 @@ class MyTarget
 {
 	public function new(){}
 }
-
-typedef MyEvent = Event<MyTarget, MyEventType>;
 
 enum MyEventType
 {

@@ -23,19 +23,20 @@ SOFTWARE.
 package msignal;
 
 import msignal.Signal;
+import msignal.Slot;
 
-class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType>>
+/**
+Signal that executes listeners with one arguments.
+*/
+class EventSignal<TTarget, TType:EnumValue> extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>
 {
-	var types:Array<Array<Dynamic>>;
-
-	public var target(default, set_target):TTarget;
-
 	public function new(target:TTarget=null)
 	{
-		super(Event);
+		super([Event]);
 		this.target = target;
-		this.types = [];
 	}
+
+	public var target(default, set_target):TTarget;
 
 	function set_target(value:TTarget):TTarget
 	{
@@ -45,12 +46,10 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 		return target;
 	}
 
-	public function event(type:TType)
-	{
-		dispatch(new Event(type));
-	}
-
-	override public function dispatch(event:Event<TTarget, TType>):Void
+	/**
+	Executes the signals listeners with one arguement.
+	*/
+	public function dispatch(event:Event<TTarget, TType>)
 	{
 		if (event.target != null)
 		{
@@ -61,18 +60,6 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 		event.currentTarget = target;
 		event.signal = this;
 		
-		// broadcast to types
-
-		var index = Type.enumIndex(event.type);
-		if (types[index] != null)
-		{
-			var listeners:Array<Dynamic> = types[index];
-			for (listener in listeners)
-			{
-				Reflect.callMethod(null, listener, [event]);
-			}
-		}
-
 		// Broadcast to listeners.
 		var slotsToProcess = slots;
 
@@ -84,7 +71,6 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 
 		// Bubble the event as far as possible.
 		if (!event.bubbles) return;
-
 		var currentTarget = target;
 
 		while (currentTarget != null && Reflect.hasField(currentTarget, "parent"))
@@ -102,28 +88,50 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal1<Event<TTarget, TType
 		}
 	}
 
-	public function addForType(listener:Event<TTarget, TType> -> Void, type:EnumValue)
+	// /**
+	// A convenience method for dispatching an event.
+	// */
+	public function event(type:TType)
 	{
-		var index = Type.enumIndex(type);
-		if (types[index] == null) types[index] = [listener];
-		else types[index].push(listener);
+		dispatch(new Event(type));
 	}
 
-	public function removeForType(listener:Event<TTarget, TType> -> Void, type:EnumValue)
+	override function createSlot(listener:Event<TTarget, TType> -> Void, once:Bool=false, priority:Int=0)
 	{
-		var index = Type.enumIndex(type);
-		if (types[index] != null)
-		{
-			var listeners:Array<Dynamic> = types[index];
-			for (i in 0...listeners.length)
-			{
-				if (listeners[i] == listener)
-				{
-					listeners.splice(i, 1);
-					break;
-				}
-			}
-		}
+		return new EventSlot(this, listener, once, priority);
+	}
+}
+
+/**
+A slot that executes a listener with one argument.
+*/
+class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> Void>
+{
+	var type:Int;
+
+	public function new(signal:Dynamic, listener:TEvent -> Void, once:Bool=false, priority:Int=0)
+	{
+		super(signal, listener, once, priority);
+	}
+
+	/**
+	Executes a listener with one argument.
+	If <code>param</code> is not null, it overrides the value provided.
+	*/
+	public function execute(value1:TEvent)
+	{
+		if (!enabled) return;
+		if (once) remove();
+		if (Type.enumIndex(value1.type) != type) return;
+		listener(value1);
+	}
+
+	/**
+	Restricts the slot to firing for events of a specific type.
+	*/
+	public function forType(type:EnumValue)
+	{
+		this.type = Type.enumIndex(type);
 	}
 }
 

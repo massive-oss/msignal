@@ -1,18 +1,15 @@
 -main BasicExample
-# -lib msignal
--cp /ws/msignal/src/lib
+-lib msignal
 -js example-js/index.js
 
 --next
 
 -main BasicExample
-# -lib msignal
--cp /ws/msignal/src/lib
+-lib msignal
 -swf example-swf/index.swf
 
 --next
 
 -main BasicExample
-# -lib msignal
--cp /ws/msignal/src/lib
+-lib msignal
 -neko example-neko.n

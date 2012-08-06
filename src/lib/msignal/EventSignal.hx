@@ -37,7 +37,7 @@ class EventSignal<TTarget, TType:EnumValue>
 	public var target(default, null):TTarget;
 
 	/**
-	Creates an `EventSignal` for the provided `target`.
+	Creates an `EventSignal` for the provided target.
 	*/
 	public function new(target:TTarget)
 	{
@@ -69,11 +69,8 @@ class EventSignal<TTarget, TType:EnumValue>
 	*/
 	public function bubbleType(type:TType):Void
 	{
-		// create the event
-		var event = new Event(type);
-
 		// dispatch and bubble event
-		bubbleEvent(event);
+		bubbleEvent(new Event(type));
 	}
 
 	/**

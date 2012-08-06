@@ -37,7 +37,7 @@ class Build extends mtask.core.BuildBase
 	{
 		target.name = build.project.id;
 		target.version = build.project.version;
-		target.versionDescription = "Initial release. See http://github.com/massiveinteractive/msignal for documentation and examples.";
+		target.versionDescription = "EventSignal and bubbling.";
 		target.url = "http://github.com/massiveinteractive/msignal";
 		target.license.organization = "Massive Interactive";
 		target.username = "massive";
@@ -94,6 +94,10 @@ class Build extends mtask.core.BuildBase
 		var example = new Directory();
 		exampleDirectory(example, "src/example/responder", "ResponderExample");
 		target.addTarget("responder", example);
+
+		var example = new Directory();
+		exampleDirectory(example, "src/example/bubbling", "BubblingExample");
+		target.addTarget("bubbling", example);
 
 		target.afterBuild = function()
 		{

@@ -28,38 +28,82 @@ import msignal.Slot;
 /**
 Signal that executes listeners with one arguments.
 */
-class EventSignal<TTarget, TType:EnumValue> extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>
+class EventSignal<TTarget, TType:EnumValue> 
+	extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>, 
+	implements EventDispatcher<Event<TTarget, TType>>
 {
-	public function new(target:TTarget=null)
+	/**
+	The object for which this signal dispatches events.
+	*/
+	public var target(default, null):TTarget;
+
+	/**
+	Creates an `EventSignal` for the provided `target`.
+	*/
+	public function new(target:TTarget)
 	{
 		super([Event]);
 		this.target = target;
 	}
 
-	public var target(default, set_target):TTarget;
+	/**
+	Dispatches an event to this signals listeners by calling `dispatch`, and 
+	then attempts to bubble the event by checking if `target` has a field 
+	`parent` of type `EventDispatcher`. Each event dispatcher in the chain 
+	has an opportunity to cancel bubbling by returning `false` when 
+	`dispatchEvent` is called.
 
-	function set_target(value:TTarget):TTarget
+	EventSignals are themselves EventDispatchers, which simplifies creating 
+	bubbling chains without creating another hierarchy.
+	*/
+	public function dispatch(event:Event<TTarget, TType>):Void
 	{
-		if (value == target) return target;
-		removeAll();
-		target = value;
-		return target;
+		// set the event target
+		untyped event.target = target;
+		untyped event.signal = this;
+
+		// dispatch to this signals listeners first
+		dispatchEvent(event);
+
+		// then bubble the event as far as possible.
+		var currentTarget = target;
+		
+		while (currentTarget != null && Reflect.hasField(currentTarget, "parent"))
+		{
+			currentTarget = Reflect.field(currentTarget, "parent");
+			
+			if (Std.is(currentTarget, EventDispatcher))
+			{
+				event.currentTarget = currentTarget;
+				var dispatcher = cast(currentTarget, EventDispatcher<Dynamic>);
+
+				// dispatchEvent() can stop the bubbling by returning false.
+				if (!dispatcher.dispatchEvent(event)) break;
+			}
+		}
 	}
 
 	/**
-	Executes the signals listeners with one arguement.
+	A convenience method for dispatching an event without having to instantiate 
+	it directly. This helps prevent the ink wearing off your angle bracket keys.
 	*/
-	public function dispatch(event:Event<TTarget, TType>)
+	public function dispatchType(type:TType):Void
 	{
-		if (event.target != null)
-		{
-			event = cast event.clone();
-		}
+		// create the event
+		var event = new Event(type);
 
-		event.target = target;
+		// dispatch and bubble event
+		dispatch(event);
+	}
+
+	/**
+	Dispatches an event to the listeners of the `EventSignal`.
+	*/
+	public function dispatchEvent(event:Event<TTarget, TType>):Bool
+	{
+		// update current target
 		event.currentTarget = target;
-		event.signal = this;
-		
+
 		// Broadcast to listeners.
 		var slotsToProcess = slots;
 
@@ -69,33 +113,12 @@ class EventSignal<TTarget, TType:EnumValue> extends Signal<EventSlot<Event<TTarg
 			slotsToProcess = slotsToProcess.tail;
 		}
 
-		// Bubble the event as far as possible.
-		if (!event.bubbles) return;
-		var currentTarget = target;
-
-		while (currentTarget != null && Reflect.hasField(currentTarget, "parent"))
-		{
-			currentTarget = Reflect.field(currentTarget, "parent");
-
-			if (Std.is(currentTarget, IBubbleEventHandler))
-			{
-				event.currentTarget = currentTarget;
-				var handler = cast(currentTarget, IBubbleEventHandler<Dynamic>);
-
-				// onEventBubbled() can stop the bubbling by returning false.
-				if (!handler.onEventBubbled(event)) break;
-			}
-		}
+		return true;
 	}
 
-	// /**
-	// A convenience method for dispatching an event.
-	// */
-	public function event(type:TType)
-	{
-		dispatch(new Event(type));
-	}
-
+	/**
+	Internal method used to create the slot type for this signal.
+	*/
 	override function createSlot(listener:Event<TTarget, TType> -> Void, once:Bool=false, priority:Int=0)
 	{
 		return new EventSlot(this, listener, once, priority);
@@ -107,6 +130,9 @@ A slot that executes a listener with one argument.
 */
 class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> Void>
 {
+	/**
+	The type filter for this slot, or -1 if one has not been set using `forType`.
+	*/
 	var type:Int;
 
 	public function new(signal:Dynamic, listener:TEvent -> Void, once:Bool=false, priority:Int=0)
@@ -136,7 +162,52 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 	}
 }
 
-interface IBubbleEventHandler<TEvent>
+/**
+EventSignals dispatch Events. Events encapsulate information that listeners 
+might need to act on the event: the target/signal of the event (where it 
+originated), the current target (the target of the most recent signal to 
+dispatch the event) and the type. To avoid developers needing to subclass Event 
+to create custom fields and data, Events use type parameters to define target 
+and type constraints, and use enums as event types to allow additional data.
+*/
+class Event<TTarget, TType:EnumValue>
 {
-	function onEventBubbled(event:TEvent):Bool; 
+	/**
+	The original signal that dispatched this event.
+	*/
+	public var signal(default, null):EventSignal<TTarget, TType>;
+
+	/**
+	The target of the original signal that dispatched this event.
+	*/
+	public var target(default, null):TTarget;
+
+	/**
+	The type of the event.
+	*/
+	public var type(default, null):TType;
+
+	/**
+	The most recent target of the event. This is set each time an `EventSignal` 
+	dispatches an event. When an event bubbles, `target` is the original target 
+	while `currentTarget` is the most recent.
+	*/
+	public var currentTarget:TTarget;
+	
+	public function new(type:TType)
+	{
+		this.type = type;
+	}
+}
+
+/**
+This EventDispatcher interface.
+*/
+interface EventDispatcher<TEvent>
+{
+	/**
+	Dispatch an event, returning `true` if the event should continue to bubble, 
+	and `false` if not.
+	*/
+	function dispatchEvent(event:TEvent):Bool; 
 }

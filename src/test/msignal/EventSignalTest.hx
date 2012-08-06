@@ -23,6 +23,7 @@ SOFTWARE.
 package msignal;
 
 import massive.munit.Assert;
+import msignal.EventSignal;
 
 class EventSignalTest
 {
@@ -53,19 +54,6 @@ class EventSignalTest
 	}
 
 	@Test
-	public function dispatch_event_with_target_clones_event()
-	{
-		var event = new Event(started);
-		event.target = new MyTarget();
-
-		signal.dispatch(event);
-		signal.add(function(e)
-		{
-			Assert.isFalse(e == event);
-		});
-	}
-
-	@Test
 	public function add_for_type_filters_events_on_type()
 	{
 		var startedDispatched = false;
@@ -79,7 +67,7 @@ class EventSignalTest
 			completedDispatched = true;
 		}).forType(completed);
 
-		signal.event(started);
+		signal.dispatchType(started);
 		Assert.isTrue(startedDispatched);
 		Assert.isFalse(completedDispatched);
 	}
@@ -92,7 +80,7 @@ class EventSignalTest
 		}
 		signal.add(listener).forType(started);
 		signal.remove(listener);
-		signal.event(completed);
+		signal.dispatchType(completed);
 		Assert.isFalse(startedDispatched);
 	}
 
@@ -103,8 +91,8 @@ class EventSignalTest
 			startedDispatched += 1;
 		}
 		signal.addOnce(listener).forType(started);
-		signal.event(started);
-		signal.event(started);
+		signal.dispatchType(started);
+		signal.dispatchType(started);
 		Assert.areEqual(1, startedDispatched);
 	}
 }

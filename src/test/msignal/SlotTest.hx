@@ -26,6 +26,7 @@ import massive.munit.Assert;
 import massive.munit.async.AsyncFactory;
 import msignal.Signal;
 import msignal.Slot;
+import msignal.EventSignal;
 
 class SlotTest
 {

@@ -24,6 +24,7 @@ package msignal;
 
 import massive.munit.Assert;
 import msignal.Signal;
+import msignal.EventSignal;
 
 typedef DynamicEvent = Event<Dynamic, Dynamic>;
 

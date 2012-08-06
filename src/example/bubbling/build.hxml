@@ -1,0 +1,15 @@
+-main ExtendExample
+-lib msignal
+-js example-js/index.js
+
+--next
+
+-main ExtendExample
+-lib msignal
+-swf example-swf/index.swf
+
+--next
+
+-main ExtendExample
+-lib msignal
+-neko example-neko.n

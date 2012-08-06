@@ -46,10 +46,10 @@ class EventSignalTest
 	}
 
 	@Test
-	public function dispatch_sets_event_target()
+	public function bubble_sets_event_target()
 	{
 		var event = new Event(started);
-		signal.dispatch(event);
+		signal.bubbleEvent(event);
 		Assert.isTrue(event.target == target);
 	}
 
@@ -67,7 +67,7 @@ class EventSignalTest
 			completedDispatched = true;
 		}).forType(completed);
 
-		signal.dispatchType(started);
+		signal.bubbleType(started);
 		Assert.isTrue(startedDispatched);
 		Assert.isFalse(completedDispatched);
 	}
@@ -80,7 +80,7 @@ class EventSignalTest
 		}
 		signal.add(listener).forType(started);
 		signal.remove(listener);
-		signal.dispatchType(completed);
+		signal.bubbleType(completed);
 		Assert.isFalse(startedDispatched);
 	}
 
@@ -91,8 +91,8 @@ class EventSignalTest
 			startedDispatched += 1;
 		}
 		signal.addOnce(listener).forType(started);
-		signal.dispatchType(started);
-		signal.dispatchType(started);
+		signal.bubbleType(started);
+		signal.bubbleType(started);
 		Assert.areEqual(1, startedDispatched);
 	}
 }

@@ -49,8 +49,6 @@ enum DisplayEventType
 {
 	added;
 	removed;
-
-	// for example
 	mouseMoved(x:Int, y:Int);
 }
 
@@ -75,19 +73,19 @@ class Display implements EventDispatcher<DisplayEvent>
 	{
 		children.add(display);
 		display.parent = this;
-		display.event.dispatchType(added);
+		display.event.bubbleType(added);
 	}
 
 	public function remove(display:Display)
 	{
-		display.event.dispatchType(removed);
+		display.event.bubbleType(removed);
 		children.remove(display);
 		display.parent = null;
 	}
 
 	public function dispatchEvent(event:DisplayEvent):Bool
 	{
-		this.event.dispatchEvent(event);
+		this.event.dispatch(event);
 		return true;
 	}
 }

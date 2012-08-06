@@ -29,8 +29,7 @@ import msignal.Slot;
 Signal that executes listeners with one arguments.
 */
 class EventSignal<TTarget, TType:EnumValue> 
-	extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>, 
-	implements EventDispatcher<Event<TTarget, TType>>
+	extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>
 {
 	/**
 	The object for which this signal dispatches events.
@@ -47,6 +46,37 @@ class EventSignal<TTarget, TType:EnumValue>
 	}
 
 	/**
+	Dispatches an event to the listeners of the `EventSignal`.
+	*/
+	public function dispatch(event:Event<TTarget, TType>):Void
+	{
+		// update current target
+		event.currentTarget = target;
+
+		// Broadcast to listeners.
+		var slotsToProcess = slots;
+
+		while (slotsToProcess.nonEmpty)
+		{
+			slotsToProcess.head.execute(event);
+			slotsToProcess = slotsToProcess.tail;
+		}
+	}
+
+	/**
+	A convenience method for dispatching an event without having to instantiate 
+	it directly. This helps prevent the ink wearing off your angle bracket keys.
+	*/
+	public function bubbleType(type:TType):Void
+	{
+		// create the event
+		var event = new Event(type);
+
+		// dispatch and bubble event
+		bubbleEvent(event);
+	}
+
+	/**
 	Dispatches an event to this signals listeners by calling `dispatch`, and 
 	then attempts to bubble the event by checking if `target` has a field 
 	`parent` of type `EventDispatcher`. Each event dispatcher in the chain 
@@ -56,14 +86,14 @@ class EventSignal<TTarget, TType:EnumValue>
 	EventSignals are themselves EventDispatchers, which simplifies creating 
 	bubbling chains without creating another hierarchy.
 	*/
-	public function dispatch(event:Event<TTarget, TType>):Void
+	public function bubbleEvent(event:Event<TTarget, TType>):Void
 	{
 		// set the event target
 		untyped event.target = target;
 		untyped event.signal = this;
 
 		// dispatch to this signals listeners first
-		dispatchEvent(event);
+		dispatch(event);
 
 		// then bubble the event as far as possible.
 		var currentTarget = target;
@@ -81,39 +111,6 @@ class EventSignal<TTarget, TType:EnumValue>
 				if (!dispatcher.dispatchEvent(event)) break;
 			}
 		}
-	}
-
-	/**
-	A convenience method for dispatching an event without having to instantiate 
-	it directly. This helps prevent the ink wearing off your angle bracket keys.
-	*/
-	public function dispatchType(type:TType):Void
-	{
-		// create the event
-		var event = new Event(type);
-
-		// dispatch and bubble event
-		dispatch(event);
-	}
-
-	/**
-	Dispatches an event to the listeners of the `EventSignal`.
-	*/
-	public function dispatchEvent(event:Event<TTarget, TType>):Bool
-	{
-		// update current target
-		event.currentTarget = target;
-
-		// Broadcast to listeners.
-		var slotsToProcess = slots;
-
-		while (slotsToProcess.nonEmpty)
-		{
-			slotsToProcess.head.execute(event);
-			slotsToProcess = slotsToProcess.tail;
-		}
-
-		return true;
 	}
 
 	/**

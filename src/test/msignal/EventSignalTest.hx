@@ -49,7 +49,7 @@ class EventSignalTest
 	public function bubble_sets_event_target()
 	{
 		var event = new Event(started);
-		signal.bubbleEvent(event);
+		signal.bubble(event);
 		Assert.isTrue(event.target == target);
 	}
 

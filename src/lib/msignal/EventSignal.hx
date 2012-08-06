@@ -63,14 +63,9 @@ class EventSignal<TTarget, TType:EnumValue>
 		}
 	}
 
-	/**
-	A convenience method for dispatching an event without having to instantiate 
-	it directly. This helps prevent the ink wearing off your angle bracket keys.
-	*/
-	public function bubbleType(type:TType):Void
+	public function dispatchType(type:TType):Void
 	{
-		// dispatch and bubble event
-		bubbleEvent(new Event(type));
+		dispatch(new Event(type));
 	}
 
 	/**
@@ -83,7 +78,7 @@ class EventSignal<TTarget, TType:EnumValue>
 	EventSignals are themselves EventDispatchers, which simplifies creating 
 	bubbling chains without creating another hierarchy.
 	*/
-	public function bubbleEvent(event:Event<TTarget, TType>):Void
+	public function bubble(event:Event<TTarget, TType>):Void
 	{
 		// set the event target
 		untyped event.target = target;
@@ -108,6 +103,15 @@ class EventSignal<TTarget, TType:EnumValue>
 				if (!dispatcher.dispatchEvent(event)) break;
 			}
 		}
+	}
+
+	/**
+	A convenience method for dispatching an event without having to instantiate 
+	it directly. This helps prevent the ink wearing off your angle bracket keys.
+	*/
+	public function bubbleType(type:TType):Void
+	{
+		bubble(new Event(type));
 	}
 
 	/**

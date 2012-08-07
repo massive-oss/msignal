@@ -50,6 +50,13 @@ class EventSignal<TTarget, TType:EnumValue>
 	*/
 	public function dispatch(event:Event<TTarget, TType>):Void
 	{
+		if (event.target == null)
+		{
+			// set the event target
+			untyped event.target = target;
+			untyped event.signal = this;
+		}
+		
 		// update current target
 		event.currentTarget = target;
 
@@ -80,10 +87,6 @@ class EventSignal<TTarget, TType:EnumValue>
 	*/
 	public function bubble(event:Event<TTarget, TType>):Void
 	{
-		// set the event target
-		untyped event.target = target;
-		untyped event.signal = this;
-
 		// dispatch to this signals listeners first
 		dispatch(event);
 

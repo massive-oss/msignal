@@ -146,8 +146,8 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 	public function execute(value1:TEvent)
 	{
 		if (!enabled) return;
-		if (once) remove();
 		if (type > -1 && Type.enumIndex(value1.type) != type) return;
+		if (once) remove();
 		listener(value1);
 	}
 

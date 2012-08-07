@@ -67,7 +67,7 @@ class EventSignalTest
 			completedDispatched = true;
 		}).forType(completed);
 
-		signal.bubbleType(started);
+		signal.dispatchType(started);
 		Assert.isTrue(startedDispatched);
 		Assert.isFalse(completedDispatched);
 	}
@@ -80,7 +80,7 @@ class EventSignalTest
 		}
 		signal.add(listener).forType(started);
 		signal.remove(listener);
-		signal.bubbleType(completed);
+		signal.dispatchType(completed);
 		Assert.isFalse(startedDispatched);
 	}
 
@@ -92,6 +92,18 @@ class EventSignalTest
 		}
 		signal.addOnce(listener).forType(started);
 		signal.bubbleType(started);
+		signal.bubbleType(started);
+		Assert.areEqual(1, startedDispatched);
+	}
+
+	@Test function add_once_for_type_does_not_remove_for_other_types()
+	{
+		var startedDispatched = 0;
+		var listener = function(e){
+			startedDispatched += 1;
+		}
+		signal.addOnce(listener).forType(started);
+		signal.bubbleType(completed);
 		signal.bubbleType(started);
 		Assert.areEqual(1, startedDispatched);
 	}

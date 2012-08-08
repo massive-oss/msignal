@@ -37,7 +37,10 @@ class Build extends mtask.core.BuildBase
 	{
 		target.name = build.project.id;
 		target.version = build.project.version;
-		target.versionDescription = "EventSignal and bubbling.";
+		target.versionDescription = 
+"Always set event target, not only when bubbling
+Check type filter of EventSlot -BEFORE- removing (for addOnce)";
+		
 		target.url = "http://github.com/massiveinteractive/msignal";
 		target.license.organization = "Massive Interactive";
 		target.username = "massive";

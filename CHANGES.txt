@@ -1,0 +1,4 @@
+1.0.0	Initial release
+1.1.0	Improved SignalEvent implementation
+1.1.1	Always set event target, not only when bubbling
+		Check type filter of EventSlot -BEFORE- removing (for addOnce)

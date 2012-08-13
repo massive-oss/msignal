@@ -50,7 +50,7 @@ class Build extends mtask.core.BuildBase
 		{
 			cp("src/*", target.path);
 			cmd("haxe", ["-cp", "src", "-js", target.path + "/haxedoc.js", 
-				"-xml", target.path + "/haxedoc.xml", "msignal.Signal"]);
+				"-xml", target.path + "/haxedoc.xml", "msignal.Signal", "msignal.EventSignal"]);
 			rm(target.path + "/haxedoc.js");
 		}
 	}

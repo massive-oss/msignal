@@ -48,8 +48,8 @@ class Build extends mtask.core.BuildBase
 		target.addTag("massive");
 		target.afterCompile = function()
 		{
-			cp("src/lib/*", target.path);
-			cmd("haxe", ["-cp", "src/lib", "-js", target.path + "/haxedoc.js", 
+			cp("src/*", target.path);
+			cmd("haxe", ["-cp", "src", "-js", target.path + "/haxedoc.js", 
 				"-xml", target.path + "/haxedoc.xml", "msignal.Signal"]);
 			rm(target.path + "/haxedoc.js");
 		}
@@ -57,7 +57,7 @@ class Build extends mtask.core.BuildBase
 
 	function exampleHaxe(target:Haxe, path:String, main:String)
 	{
-		target.addPath("src/lib");
+		target.addPath("src");
 		target.addPath(path);
 		target.main = main;
 	}
@@ -85,19 +85,19 @@ class Build extends mtask.core.BuildBase
 	@target function examples(target:Directory)
 	{
 		var example = new Directory();
-		exampleDirectory(example, "src/example/basic", "BasicExample");
+		exampleDirectory(example, "example/basic", "BasicExample");
 		target.addTarget("basic", example);
 
 		var example = new Directory();
-		exampleDirectory(example, "src/example/extend", "ExtendExample");
+		exampleDirectory(example, "example/extend", "ExtendExample");
 		target.addTarget("extend", example);
 
 		var example = new Directory();
-		exampleDirectory(example, "src/example/responder", "ResponderExample");
+		exampleDirectory(example, "example/responder", "ResponderExample");
 		target.addTarget("responder", example);
 
 		var example = new Directory();
-		exampleDirectory(example, "src/example/bubbling", "BubblingExample");
+		exampleDirectory(example, "example/bubbling", "BubblingExample");
 		target.addTarget("bubbling", example);
 
 		target.afterBuild = function()

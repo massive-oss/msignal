@@ -132,35 +132,69 @@ A slot that executes a listener with one argument.
 class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> Void>
 {
 	/**
-	The type filter for this slot, or -1 if one has not been set using `forType`.
+	The enumValue type for this slot or null if one has not been set using `forType`.
 	*/
-	var type:Int;
+	var type:EnumValue;
 
 	public function new(signal:Dynamic, listener:TEvent -> Void, once:Bool=false, priority:Int=0)
 	{
 		super(signal, listener, once, priority);
-		type = -1;
+		type = null;
 	}
 
 	/**
 	Executes a listener with one argument.
-	If <code>param</code> is not null, it overrides the value provided.
+	If type <code>params</code> are not null, it will check type equality on enum parameters.
 	*/
 	public function execute(value1:TEvent)
 	{
 		if (!enabled) return;
-		if (type > -1 && Type.enumIndex(value1.type) != type) return;
+
+		if (type != null && !typeEq(type, value1.type)) return;
 		if (once) remove();
 		listener(value1);
 	}
 
 	/**
 	Restricts the slot to firing for events of a specific type.
+	EnumValues with paramaters can specifiy explicit or fuzzy matching criteria.trace
+
+	To match against specific <code>param</code> values include them in the type (e.g. Progress(1))
+	To fuzzy match against any value use a <code>null</code> value (e.g. Progress(null))
 	*/
 	public function forType(type:EnumValue)
 	{
-		this.type = Type.enumIndex(type);
+		type = type;
 	}
+
+	/**
+	 * Compares enum equality, ignoring any non enum parameters, so that:
+	 *	Fail(IO("One thing happened")) == Fail(IO("Another thing happened"))
+	*/
+	function typeEq(a:EnumValue, b:EnumValue)
+	{
+		if (a == b) return true;
+		if (Type.getEnum(a) != Type.getEnum(b)) return false;
+		if (Type.enumIndex(a) != Type.enumIndex(b)) return false;
+
+		var aParams = Type.enumParameters(a);
+		if (aParams.length == 0) return true;
+		var bParams = Type.enumParameters(b);
+
+		for (i in 0...aParams.length)
+		{
+			var aParam = aParams[i];
+			var bParam = bParams[i];
+
+			if (aParam == null) continue;
+			if (Type.getEnum(aParam) == null) continue;
+			if (!typeEq(aParam, bParam)) return false;
+		}
+
+		return true;
+	}
+
+	
 }
 
 /**

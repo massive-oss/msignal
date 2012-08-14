@@ -107,6 +107,41 @@ class EventSignalTest
 		signal.bubbleType(started);
 		Assert.areEqual(1, startedDispatched);
 	}
+
+	@Test
+	public function add_for_type_with_params_filters_events_on_type_and_params()
+	{
+		var progressDispatchedCount = 0;
+
+		signal.add(function(e){
+			progressDispatchedCount ++;
+		}).forType(progressed(0));
+
+		signal.progressDispatchedCount(function(e){
+			changedCount ++;
+		}).forType(progressed(1);
+
+		signal.dispatchType(progressed(1));
+		Assert.areEqual(1, progressDispatchedCount);
+	}
+
+	@Test
+	public function add_for_type_with_null_params_filters_events_on_type_only()
+	{
+		var progressDispatchedCount = 0;
+
+		signal.add(function(e){
+			progressDispatchedCount ++;
+		}).forType(progressed(null));
+
+		signal.add(function(e){
+			progressDispatchedCount ++;
+		}).forType(progressed(null);
+
+		signal.dispatchType(progressed(1));
+		Assert.areEqual(2, progressDispatchedCount);
+	}
+
 }
 
 class MyTarget

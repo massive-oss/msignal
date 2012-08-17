@@ -170,15 +170,16 @@ class EventSlot<TValue> extends Slot<Dynamic, Event<Dynamic, TValue> -> Void>
 
 	public static function typeEq(a:Dynamic, b:Dynamic):Bool
 	{
+		if(a == b) return true;
+
 		switch(Type.typeof(a))
 		{
 			case TEnum(e):
 			{
-				var eq = enumTypeEq(cast a, cast b);
-				return eq;
+				return enumTypeEq(cast a, cast b);
 			}
 			default:
-				return a == b;
+				return false;
 		}
 		return false;
 	}

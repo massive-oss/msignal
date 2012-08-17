@@ -25,11 +25,13 @@ package msignal;
 import msignal.Signal;
 import msignal.Slot;
 
+import Type;
+
 /**
 Signal that executes listeners with one arguments.
 */
-class EventSignal<TTarget, TType:EnumValue> 
-	extends Signal<EventSlot<Event<TTarget, TType>>, Event<TTarget, TType> -> Void>
+class EventSignal<TTarget, TType> 
+	extends Signal<EventSlot<TType>, Event<TTarget, TType> -> Void>
 {
 	/**
 	The object for which this signal dispatches events.
@@ -122,35 +124,34 @@ class EventSignal<TTarget, TType:EnumValue>
 	*/
 	override function createSlot(listener:Event<TTarget, TType> -> Void, once:Bool=false, priority:Int=0)
 	{
-		return new EventSlot(this, listener, once, priority);
+		return new EventSlot(this, cast listener, once, priority);
 	}
 }
 
 /**
 A slot that executes a listener with one argument.
 */
-class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> Void>
+class EventSlot<TValue> extends Slot<Dynamic, Event<Dynamic, TValue> -> Void>
 {
 	/**
-	The enumValue type for this slot or null if one has not been set using `forType`.
+	The expected type for this slot or null if one has not been set using `forType`.
 	*/
-	var type:EnumValue;
+	var filterType:Null<TValue>;
 
-	public function new(signal:Dynamic, listener:TEvent -> Void, once:Bool=false, priority:Int=0)
+	public function new(signal:Dynamic, listener:Event<Dynamic, TValue> -> Void, once:Bool=false, priority:Int=0)
 	{
 		super(signal, listener, once, priority);
-		type = null;
 	}
 
 	/**
 	Executes a listener with one argument.
 	If type <code>params</code> are not null, it will check type equality on enum parameters.
 	*/
-	public function execute(value1:TEvent)
+	public function execute(value1:Event<Dynamic, TValue>)
 	{
 		if (!enabled) return;
 
-		if (type != null && !typeEq(type, value1.type)) return;
+		if (filterType != null && !typeEq(filterType, value1.type)) return;
 		if (once) remove();
 		listener(value1);
 	}
@@ -162,16 +163,38 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 	To match against specific <code>param</code> values include them in the type (e.g. Progress(1))
 	To fuzzy match against any value use a <code>null</code> value (e.g. Progress(null))
 	*/
-	public function forType(type:EnumValue)
+	public function forType(value:TValue)
 	{
-		type = type;
+		filterType = value;
+	}
+
+	public static function typeEq(a:Dynamic, b:Dynamic):Bool
+	{
+		switch(Type.typeof(a))
+		{
+			case TEnum(e):
+			{
+				var eq = enumTypeEq(cast a, cast b);
+				return eq;
+			}
+			default:
+				return a == b;
+		}
+		return false;
 	}
 
 	/**
 	 * Compares enum equality, ignoring any non enum parameters, so that:
 	 *	Fail(IO("One thing happened")) == Fail(IO("Another thing happened"))
+	 * 
+	 * Also allows for wildcard matching by passing through <code>null</code> for
+	 * any params, so that:
+	 *  Fail(IO(null)) matches Fail(IO("Another thing happened"))
+	 *
+	 * @param a the enum value to filter on
+	 * @param b the enum value being checked
 	*/
-	function typeEq(a:EnumValue, b:EnumValue)
+	static public function enumTypeEq(a:EnumValue, b:EnumValue)
 	{
 		if (a == b) return true;
 		if (Type.getEnum(a) != Type.getEnum(b)) return false;
@@ -187,8 +210,7 @@ class EventSlot<TEvent:Event<Dynamic, Dynamic>> extends Slot<Dynamic, TEvent -> 
 			var bParam = bParams[i];
 
 			if (aParam == null) continue;
-			if (Type.getEnum(aParam) == null) continue;
-			if (!typeEq(aParam, bParam)) return false;
+			if(!typeEq(aParam, bParam)) return false;
 		}
 
 		return true;
@@ -205,7 +227,7 @@ dispatch the event) and the type. To avoid developers needing to subclass Event
 to create custom fields and data, Events use type parameters to define target 
 and type constraints, and use enums as event types to allow additional data.
 */
-class Event<TTarget, TType:EnumValue>
+class Event<TTarget, TType>
 {
 	/**
 	The original signal that dispatched this event.

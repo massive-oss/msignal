@@ -25,12 +25,15 @@ package msignal;
 import massive.munit.Assert;
 import msignal.EventSignal;
 
-class EventSignalTest
+class EventSignalIntTest
 {
+	public static inline var STARTED:Int = 0;
+	public static inline var COMPLETED:Int = 1;
+	
 	public function new() {}
 
 	var target:MyTarget;
-	var signal:EventSignal<MyTarget, MyEventType>;
+	var signal:EventSignal<MyTarget, Int>;
 
 	@Before
 	public function before()
@@ -48,7 +51,7 @@ class EventSignalTest
 	@Test
 	public function bubble_sets_event_target()
 	{
-		var event = new Event(started);
+		var event = new Event(STARTED);
 		signal.bubble(event);
 		Assert.isTrue(event.target == target);
 	}
@@ -61,13 +64,13 @@ class EventSignalTest
 
 		signal.add(function(e){
 			startedDispatched = true;
-		}).forType(started);
+		}).forType(STARTED);
 
 		signal.add(function(e){
 			completedDispatched = true;
-		}).forType(completed);
+		}).forType(COMPLETED);
 
-		signal.dispatchType(started);
+		signal.dispatchType(STARTED);
 		Assert.isTrue(startedDispatched);
 		Assert.isFalse(completedDispatched);
 	}
@@ -78,9 +81,9 @@ class EventSignalTest
 		var listener = function(e){
 			startedDispatched = true;
 		}
-		signal.add(listener).forType(started);
+		signal.add(listener).forType(STARTED);
 		signal.remove(listener);
-		signal.dispatchType(completed);
+		signal.dispatchType(COMPLETED);
 		Assert.isFalse(startedDispatched);
 	}
 
@@ -90,9 +93,9 @@ class EventSignalTest
 		var listener = function(e){
 			startedDispatched += 1;
 		}
-		signal.addOnce(listener).forType(started);
-		signal.bubbleType(started);
-		signal.bubbleType(started);
+		signal.addOnce(listener).forType(STARTED);
+		signal.bubbleType(STARTED);
+		signal.bubbleType(STARTED);
 		Assert.areEqual(1, startedDispatched);
 	}
 
@@ -102,46 +105,11 @@ class EventSignalTest
 		var listener = function(e){
 			startedDispatched += 1;
 		}
-		signal.addOnce(listener).forType(started);
-		signal.bubbleType(completed);
-		signal.bubbleType(started);
+		signal.addOnce(listener).forType(STARTED);
+		signal.bubbleType(COMPLETED);
+		signal.bubbleType(STARTED);
 		Assert.areEqual(1, startedDispatched);
 	}
-
-	@Test
-	public function add_for_type_with_enum_params_filters_events_on_type_and_params()
-	{
-		var progressDispatchedCount = 0;
-
-		signal.add(function(e){
-			progressDispatchedCount ++;
-		}).forType(progressed(0));
-
-		signal.add(function(e){
-			progressDispatchedCount ++;
-		}).forType(progressed(1));
-
-		signal.dispatchType(progressed(1));
-		Assert.areEqual(1, progressDispatchedCount);
-	}
-
-	@Test
-	public function add_for_type_with_null_enum_params_filters_events_on_type_only()
-	{
-		var progressDispatchedCount = 0;
-
-		signal.add(function(e){
-			progressDispatchedCount ++;
-		}).forType(progressed(null));
-
-		signal.add(function(e){
-			progressDispatchedCount ++;
-		}).forType(progressed(null));
-
-		signal.dispatchType(progressed(1));
-		Assert.areEqual(2, progressDispatchedCount);
-	}
-
 }
 
 private class MyTarget
@@ -149,9 +117,3 @@ private class MyTarget
 	public function new(){}
 }
 
-enum MyEventType
-{
-	started;
-	progressed(value:Null<Float>);
-	completed;
-}

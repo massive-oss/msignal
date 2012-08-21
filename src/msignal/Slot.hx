@@ -33,8 +33,14 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 {
 	/**
 	The listener associated with this slot.
+	Note: for hxcpp 2.10 this requires a getter method to compile
 	*/
+	#if cpp
+	public var listener(get_listener, set_listener):TListener;
+	#else
 	public var listener(default, set_listener):TListener;
+	#end
+	
 
 	/**
 	Whether this slot is automatically removed after it has been used once.
@@ -71,6 +77,16 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 	{
 		signal.remove(listener);
 	}
+
+	#if cpp
+	/**
+	Hxcpp 2.10 requires a getter method for a typed function property in order to compile
+	*/
+	function get_listener():TListener
+	{
+		return listener;
+	}
+	#end
 
 	function set_listener(value:TListener):TListener
 	{

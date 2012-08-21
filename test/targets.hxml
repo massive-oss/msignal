@@ -41,3 +41,16 @@
 -cp test
 
 -neko bin/test/neko_test.n
+
+--next
+
+## cpp
+-main TestMain
+-cpp build/test/cpp_test
+
+-lib hamcrest
+-lib munit
+-debug
+-D HXCPP_M64
+-cp src
+-cp test

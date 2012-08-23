@@ -8,4 +8,5 @@ TestSuite.hx
 .mcover
 
 /bin
+.DS_Store
 /build/test/

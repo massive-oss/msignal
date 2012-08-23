@@ -1,5 +1,4 @@
-Signals
-====================
+## Overview
 
 Signals are highly scalable and lightweight alternative to Events.
 

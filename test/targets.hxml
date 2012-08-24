@@ -46,7 +46,7 @@
 
 ## cpp
 -main TestMain
--cpp build/test/cpp_test
+-cpp bin/test/cpp_test
 
 -lib hamcrest
 -lib munit

@@ -35,23 +35,17 @@ class Build extends mtask.core.BuildBase
 
 	@target function haxelib(target:HaxeLib)
 	{
-		target.name = build.project.id;
-		target.version = build.project.version;
-		target.versionDescription = "Always set event target, not only when bubbling, Check type filter of EventSlot before removing (for addOnce)";
-		
 		target.url = "http://github.com/massiveinteractive/msignal";
-		target.license.organization = "Massive Interactive";
-		target.username = "massive";
 		target.description = "A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.";
+		target.versionDescription = "Adds support for CPP target and value matching of non-enum types on EventSignal slots.";
+
 		target.addTag("cross");
 		target.addTag("utility");
 		target.addTag("massive");
+		
 		target.afterCompile = function()
 		{
 			cp("src/*", target.path);
-			cmd("haxe", ["-cp", "src", "-js", target.path + "/haxedoc.js", 
-				"-xml", target.path + "/haxedoc.xml", "msignal.Signal", "msignal.EventSignal"]);
-			rm(target.path + "/haxedoc.js");
 		}
 	}
 

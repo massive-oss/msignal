@@ -1,0 +1,8 @@
+<project name="msignal" url="http://github.com/massiveinteractive/msignal" license="MIT">
+	<user name="massive"/>
+	<description>A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.</description>
+	<version name="1.1.2">Adds support for CPP target and value matching of non-enum types on EventSignal slots.</version>
+	<tag v="cross"/>
+	<tag v="utility"/>
+	<tag v="massive"/>
+</project>

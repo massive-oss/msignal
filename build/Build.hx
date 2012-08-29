@@ -37,7 +37,7 @@ class Build extends mtask.core.BuildBase
 	{
 		target.url = "http://github.com/massiveinteractive/msignal";
 		target.description = "A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.";
-		target.versionDescription = "Adds support for CPP target and value matching of non-enum types on EventSignal slots.";
+		target.versionDescription = "Adds support for C++ target and value matching of non-enum types on EventSignal slots.";
 
 		target.addTag("cross");
 		target.addTag("utility");

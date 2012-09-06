@@ -21,10 +21,7 @@ SOFTWARE.
 */
 
 import mtask.target.HaxeLib;
-import mtask.target.Neko;
 import mtask.target.Directory;
-import mtask.target.Web;
-import mtask.target.Haxe;
 
 class Build extends mtask.core.BuildBase
 {
@@ -33,70 +30,27 @@ class Build extends mtask.core.BuildBase
 		super();
 	}
 
-	@target function haxelib(target:HaxeLib)
+	@target function haxelib(t:HaxeLib)
 	{
-		target.url = "http://github.com/massiveinteractive/msignal";
-		target.description = "A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.";
-		target.versionDescription = "Adds support for C++ target and value matching of non-enum types on EventSignal slots.";
+		t.url = "http://github.com/massiveinteractive/msignal";
+		t.description = "A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.";
+		t.versionDescription = "Adds support for C++ target and value matching of non-enum types on EventSignal slots.";
 
-		target.addTag("cross");
-		target.addTag("utility");
-		target.addTag("massive");
+		t.addTag("cross");
+		t.addTag("utility");
+		t.addTag("massive");
 		
-		target.afterCompile = function()
+		t.afterCompile = function(path)
 		{
-			cp("src/*", target.path);
+			cp("src/*", path);
 		}
 	}
 
-	function exampleHaxe(target:Haxe, path:String, main:String)
+	@target function example(t:Directory)
 	{
-		target.addPath("src");
-		target.addPath(path);
-		target.main = main;
-	}
-
-	function exampleDirectory(target:Directory, path:String, main:String)
-	{
-		var exampleJS = new WebJS();
-		exampleHaxe(exampleJS.app, path, main);
-		target.addTarget("example-js", exampleJS);
-
-		var exampleSWF = new WebSWF();
-		exampleHaxe(exampleSWF.app, path, main);
-		target.addTarget("example-swf", exampleSWF);
-
-		var exampleNeko = new Neko();
-		exampleHaxe(exampleNeko, path, main);
-		target.addTarget("example-neko", exampleNeko);
-
-		target.afterBuild = function()
+		t.beforeCompile = function(path)
 		{
-			cp(path + "/*", target.path);
-		}
-	}
-
-	@target function examples(target:Directory)
-	{
-		var example = new Directory();
-		exampleDirectory(example, "example/basic", "BasicExample");
-		target.addTarget("basic", example);
-
-		var example = new Directory();
-		exampleDirectory(example, "example/extend", "ExtendExample");
-		target.addTarget("extend", example);
-
-		var example = new Directory();
-		exampleDirectory(example, "example/responder", "ResponderExample");
-		target.addTarget("responder", example);
-
-		var example = new Directory();
-		exampleDirectory(example, "example/bubbling", "BubblingExample");
-		target.addTarget("bubbling", example);
-
-		target.afterBuild = function()
-		{
-			zip(target.path);
+			cp("example/*", path);
 		}
 	}
 
@@ -105,7 +59,7 @@ class Build extends mtask.core.BuildBase
 		invoke("clean");
 		invoke("test");
 		invoke("build haxelib");
-		invoke("build examples");
+		invoke("build example");
 	}
 
 	@task function test()

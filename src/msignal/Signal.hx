@@ -158,7 +158,7 @@ class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		return false; // Listener was already registered.
 	}
 
-	@IgnoreCover
+	@:IgnoreCover
 	function createSlot(listener:TListener, once:Bool=false, priority:Int=0):TSlot
 	{
 		return null;

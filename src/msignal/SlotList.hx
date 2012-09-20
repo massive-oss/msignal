@@ -24,7 +24,7 @@ package msignal;
 
 class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 {
-	@IgnoreCover
+	@:IgnoreCover
 	static function __init__() { NIL = new SlotList<Dynamic, Dynamic>(null, null); }
 	
 	/**

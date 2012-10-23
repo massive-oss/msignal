@@ -40,7 +40,7 @@ class Build extends mtask.core.BuildBase
 		t.addTag("utility");
 		t.addTag("massive");
 		
-		t.afterCompile = function(path)
+		t.beforeCompile = function(path)
 		{
 			cp("src/*", path);
 		}
@@ -54,16 +54,17 @@ class Build extends mtask.core.BuildBase
 		}
 	}
 
-	@task function release()
-	{
-		invoke("clean");
-		invoke("test");
-		invoke("build haxelib");
-		invoke("build example");
-	}
-
 	@task function test()
 	{
 		cmd("haxelib", ["run", "munit", "test", "-coverage"]);
+	}
+
+	@task function teamcity()
+	{
+		invoke("test");
+		cmd("haxelib", ["run", "munit", "report", "teamcity"]);
+
+		invoke("build haxelib");
+		invoke("build example");
 	}
 }

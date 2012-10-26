@@ -1,5 +1,6 @@
 {
 	"name":"MassiveSignal",
 	"version":"1.1.2",
-	"id":"msignal"
+	"id":"msignal",
+	"dependencies":{}
 }

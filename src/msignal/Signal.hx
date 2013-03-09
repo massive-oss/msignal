@@ -30,7 +30,7 @@ typedef AnySignal = Signal<Dynamic, Dynamic>;
 A Signal manages a list of listeners, which are executed when the signal is 
 dispatched.
 */
-class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
+class Signal<TSlot:AnySlot, TListener>
 {
 	public var valueClasses:Array<Dynamic>;
 

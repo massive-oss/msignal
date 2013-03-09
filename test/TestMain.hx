@@ -29,7 +29,6 @@ import massive.munit.TestRunner;
 
 #if js
 import js.Lib;
-import js.Dom;
 #end
 
 /**
@@ -73,8 +72,8 @@ class TestMain
                 flash.external.ExternalInterface.call("testResult", successful);
             #elseif js
                 js.Lib.eval("testResult(" + successful + ");");
-            #elseif neko
-                neko.Sys.exit(0);
+            #elseif sys
+                Sys.exit(0);
             #end
         }
         // if run from outside browser can get error which we can ignore

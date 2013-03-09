@@ -4,3 +4,5 @@
 		Check type filter of EventSlot -BEFORE- removing (for addOnce)
 1.1.2	Adds support for C++ target and value matching of non-enum types on 
 		EventSignal slots.
+
+1.2.0  Adds support for Haxe 3

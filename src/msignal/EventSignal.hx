@@ -174,7 +174,7 @@ class EventSlot<TValue> extends Slot<Dynamic, Event<Dynamic, TValue> -> Void>
 
 		switch(Type.typeof(a))
 		{
-			case TEnum(e):
+			case TEnum(_):
 			{
 				return enumTypeEq(cast a, cast b);
 			}

@@ -29,16 +29,22 @@ typedef AnySlot = Slot<Dynamic, Dynamic>;
 /**
 Defines the basic properties of a listener associated with a Signal.
 */
+#if haxe3
 class Slot<TSignal:AnySignal, TListener>
+#else
+class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
+#end
 {
 	/**
 	The listener associated with this slot.
 	Note: for hxcpp 2.10 this requires a getter method to compile
 	*/
 	#if cpp
-	@:isVar public var listener(get_listener, set_listener):TListener;
+	#if haxe3 @:isVar #end
+	public var listener(get_listener, set_listener):TListener;
 	#else
-	@:isVar public var listener(default, set_listener):TListener;
+	#if haxe3 @:isVar #end
+	public var listener(default, set_listener):TListener;
 	#end
 	
 

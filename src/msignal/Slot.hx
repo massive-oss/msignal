@@ -30,7 +30,7 @@ typedef AnySlot = Slot<Dynamic, Dynamic>;
 Defines the basic properties of a listener associated with a Signal.
 */
 #if haxe3
-class Slot<TSignal:Signal<Dynamic, Dynamic>, TListener>
+class Slot<TSignal:msignal.Signal.AnySignal, TListener>
 #else
 class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 #end

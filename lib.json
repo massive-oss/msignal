@@ -1,4 +1,10 @@
 {
+	"msignal":"1.1.2",
 	"mcover":"280e512",
-	"munit":"25bdcdc"
+	"msys":"b9958df",
+	"mconsole":"182547e",
+	"mcore":"9c89aca",
+	"munit":"25bdcdc",
+	"mtask":"9430706",
+	"hamcrest":"1.2.0"
 }

@@ -1,6 +1,14 @@
 {
-	"name":"MassiveSignal",
-	"version":"1.2.0",
-	"id":"msignal",
-	"dependencies":{}
+	"project":
+	{
+		"name":"MassiveSignal",
+		"version":"1.2.0",
+		"id":"msignal",
+		"dependencies":{},
+		"devDependencies":
+		{
+			"munit":"feature/haxe-3",
+			"mcover":"feature/haxe-3"
+		}
+	}
 }

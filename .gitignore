@@ -7,4 +7,5 @@ TestSuite.hx
 
 /bin
 /.temp
+/lib
 .DS_Store

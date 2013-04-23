@@ -28,8 +28,8 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	static function __init__() { NIL = new SlotList<Dynamic, Dynamic>(null, null); }
 	
 	/**
-	Represents an empty list. Used as the list terminator.
-	*/
+		Represents an empty list. Used as the list terminator.
+	**/
 	public static var NIL:SlotList<Dynamic, Dynamic>;
 	
 	public var head:TSlot;
@@ -37,15 +37,16 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	public var nonEmpty:Bool;
 	
 	/**
-	Creates and returns a new SlotList object.
-	 *
-	<p>A user never has to create a SlotList manually. 
-	Use the <code>NIL</code> element to represent an empty list. 
-	<code>NIL.prepend(value)</code> would create a list containing <code>value</code></p>.
-	 *
-	@param head The first slot in the list.
-	@param tail A list containing all slots except head.
-	*/
+		Creates and returns a new SlotList object.
+
+		<p>A user never has to create a SlotList manually. 
+		Use the <code>NIL</code> element to represent an empty list. 
+		<code>NIL.prepend(value)</code> would create a list containing 
+		<code>value</code></p>.
+
+		@param head The first slot in the list.
+		@param tail A list containing all slots except head.
+	**/
 	public function new(head:TSlot, tail:SlotList<TSlot, TListener>=null)
 	{
 		nonEmpty = false;
@@ -73,8 +74,8 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	}
 	
 	/**
-	The number of slots in the list.
-	*/
+		The number of slots in the list.
+	**/
 	public var length(get_length, null):Int;
 	function get_length():Int
 	{
@@ -98,23 +99,23 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	}
 	
 	/**
-	Prepends a slot to this list.
-	@param	slot The item to be prepended.
-	@return	A list consisting of slot followed by all elements of this list.
-	*/
+		Prepends a slot to this list.
+		@param	slot The item to be prepended.
+		@return	A list consisting of slot followed by all elements of this list.
+	**/
 	public function prepend(slot:TSlot)
 	{
 		return new SlotList<TSlot, TListener>(slot, this);
 	}
 	
 	/**
-	Appends a slot to this list.
-	Note: appending is O(n). Where possible, prepend which is O(1).
-	In some cases, many list items must be cloned to 
-	avoid changing existing lists.
-	@param	slot The item to be appended.
-	@return	A list consisting of all elements of this list followed by slot.
-	*/
+		Appends a slot to this list.
+		Note: appending is O(n). Where possible, prepend which is O(1).
+		In some cases, many list items must be cloned to 
+		avoid changing existing lists.
+		@param	slot The item to be appended.
+		@return	A list consisting of all elements of this list followed by slot.
+	**/
 	public function append(slot:TSlot)
 	{
 		if (slot == null) return this;
@@ -143,12 +144,12 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		return wholeClone;
 	}		
 	
-	/*
-	Insert a slot into the list in a position according to its priority.
-	The higher the priority, the closer the item will be inserted to the 
-	list head.
-	@params slot The item to be inserted.
-	*/
+	/**
+		Insert a slot into the list in a position according to its priority.
+		The higher the priority, the closer the item will be inserted to the 
+		list head.
+		@param slot The item to be inserted.
+	**/
 	public function insertWithPriority(slot:TSlot)
 	{
 		if (!nonEmpty) return new SlotList<TSlot, TListener>(slot);
@@ -181,11 +182,12 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	}
 	
 	/**
-	Returns the slots in this list that do not contain the supplied listener.
-	Note: assumes the listener is not repeated within the list.
-	@param	listener The function to remove.
-	@return A list consisting of all elements of this list that do not have listener.
-	*/
+		Returns the slots in this list that do not contain the supplied 
+		listener. Note: assumes the listener is not repeated within the list.
+		@param	listener The function to remove.
+		@return A list consisting of all elements of this list that do not 
+				have listener.
+	**/
 	public function filterNot(listener:TListener)
 	{
 		if (!nonEmpty || listener == null) return this;
@@ -215,8 +217,9 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	}
 	
 	/**
-	Determines whether the supplied listener Function is contained within this list
-	*/
+		Determines whether the supplied listener Function is contained 
+		within this list
+	**/
 	public function contains(listener:TListener):Bool
 	{
 		if (!nonEmpty) return false;
@@ -232,11 +235,12 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	}
 	
 	/**
-	Retrieves the Slot associated with a supplied listener within the SlotList.
-	@param   listener The Function being searched for
-	@return  The ISlot in this list associated with the listener parameter through the ISlot.listener property.
-			 Returns null if no such ISlot instance exists or the list is empty.  
-	*/
+		Retrieves the Slot associated with a supplied listener within the SlotList.
+		@param   listener The Function being searched for
+		@return  The ISlot in this list associated with the listener parameter 
+				 through the ISlot.listener property. Returns null if no such 
+				 ISlot instance exists or the list is empty.  
+	**/
 	public function find(listener:TListener):TSlot
 	{
 		if (!nonEmpty) return null;

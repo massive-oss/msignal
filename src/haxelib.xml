@@ -1,7 +1,7 @@
 <project name="msignal" url="http://github.com/massiveinteractive/msignal" license="MIT">
 	<user name="massive"/>
-	<description>A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.</description>
-	<version name="1.2.0">Adds support for Haxe 3.</version>
+	<description><![CDATA[A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.]]></description>
+	<version name="1.2.0"><![CDATA[Adds support for Haxe 3.]]></version>
 	<tag v="cross"/>
 	<tag v="utility"/>
 	<tag v="massive"/>

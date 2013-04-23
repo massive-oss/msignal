@@ -1,15 +1,16 @@
 {
 	"project":
 	{
+		"id":"msignal",
 		"name":"MassiveSignal",
 		"version":"1.2.0",
-		"id":"msignal",
 		"dependencies":{},
 		"devDependencies":
 		{
-			"mtask":"haxe3",
-			"munit":"feature/haxe-3",
-			"mcover":"feature/haxe-3"
+			"mtask":"1.x",
+			"munit":"2.x",
+			"mcover":"2.x",
+			"hamcrest":"1.x"
 		}
 	}
 }

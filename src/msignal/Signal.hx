@@ -22,15 +22,22 @@ SOFTWARE.
 
 package msignal;
 
+import msignal.OnceSignal.OnceSignal0;
+import msignal.OnceSignal.OnceSignal1;
+import msignal.OnceSignal.OnceSignal2;
 import msignal.Slot;
 
-typedef AnySignal = Signal<Dynamic, Dynamic>;
+interface AnySignal implements OnceSignal<Dynamic, Dynamic> {
+    public function add(listener:Dynamic):Dynamic;
+}
 
 /**
 	A Signal manages a list of listeners, which are executed when the signal is 
 	dispatched.
 **/
 class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
+implements OnceSignal<TSlot, TListener>,
+implements AnySignal
 {
 	public var valueClasses:Array<Dynamic>;
 
@@ -173,7 +180,9 @@ class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 /**
 	Signal that executes listeners with no arguments.
 **/
-class Signal0 extends Signal<Slot0, Void -> Void>
+class Signal0 extends Signal<Slot0, Void -> Void>,
+implements OnceSignal0,
+implements AnySignal
 {
 	public function new()
 	{
@@ -203,7 +212,9 @@ class Signal0 extends Signal<Slot0, Void -> Void>
 /**
 	Signal that executes listeners with one arguments.
 **/
-class Signal1<TValue> extends Signal<Slot1<TValue>, TValue -> Void>
+class Signal1<TValue> extends Signal<Slot1<TValue>, TValue -> Void>,
+implements OnceSignal1<TValue>,
+implements AnySignal
 {
 	public function new(?type:Dynamic=null)
 	{
@@ -233,7 +244,9 @@ class Signal1<TValue> extends Signal<Slot1<TValue>, TValue -> Void>
 /**
 	Signal that executes listeners with two arguments.
 **/
-class Signal2<TValue1, TValue2> extends Signal<Slot2<TValue1, TValue2>, TValue1 -> TValue2 -> Void>
+class Signal2<TValue1, TValue2> extends Signal<Slot2<TValue1, TValue2>, TValue1 -> TValue2 -> Void>,
+implements OnceSignal2<TValue1, TValue2>,
+implements AnySignal
 {
 	public function new(?type1:Dynamic=null, ?type2:Dynamic=null)
 	{

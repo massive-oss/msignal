@@ -5,8 +5,10 @@ typedef AnyOnceSignal = OnceSignal<Dynamic, Dynamic>
 
 interface OnceSignal <TSlot:Slot<Dynamic, Dynamic>, TListener> {
     function addOnce(listener:TListener):TSlot;
+    function addOnceWithPriority(listener:TListener, ?priority:Int=0):TSlot;
     function remove(listener:TListener):TSlot;
     function removeAll():Void;
+    var numListeners(get_numListeners, null):Int;
 }
 
 interface OnceSignal0 implements OnceSignal <Slot0, Void -> Void> {

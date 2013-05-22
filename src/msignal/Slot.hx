@@ -24,6 +24,9 @@ package msignal;
 
 import msignal.Signal;
 
+/**
+	A convenience type describing any kind of slot.
+**/
 typedef AnySlot = Slot<Dynamic, Dynamic>;
 
 /**

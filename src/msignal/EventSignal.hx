@@ -226,13 +226,14 @@ class EventSlot<TValue> extends Slot<Dynamic, Event<Dynamic, TValue> -> Void>
 }
 
 /**
-	EventSignals dispatch Events. Events encapsulate information that listeners 
-	might need to act on the event: the target/signal of the event (where it 
-	originated), the current target (the target of the most recent signal to 
-	dispatch the event) and the type. To avoid developers needing to subclass 
-	Event to create custom fields and data, Events use type parameters to define 
-	target and type constraints, and use enums as event types to allow 
-	additional data.
+	Encapsulates information about a dispatched event.
+
+	The event object defines properties that listeners might need to act on an 
+	event: the target/signal of the event (where it originated), the current 
+	target (the target of the most recent signal to dispatch the event) and 
+	the type. To avoid developers needing to subclass Event to create custom 
+	fields and data, Events use type parameters to define target and type 
+	constraints, and use enums as event types to allow additional data.
 **/
 class Event<TTarget, TType>
 {
@@ -265,7 +266,7 @@ class Event<TTarget, TType>
 }
 
 /**
-	This EventDispatcher interface.
+	The EventDispatcher interface.
 **/
 interface EventDispatcher<TEvent>
 {

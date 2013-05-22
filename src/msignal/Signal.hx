@@ -24,6 +24,9 @@ package msignal;
 
 import msignal.Slot;
 
+/**
+	A convenience type describing any kind of signal.
+**/
 typedef AnySignal = Signal<Dynamic, Dynamic>;
 
 /**

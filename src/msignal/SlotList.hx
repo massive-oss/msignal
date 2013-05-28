@@ -157,16 +157,16 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		var priority:Int = slot.priority;
 		
 		// Special case: new slot has the highest priority.
-		if (priority > this.head.priority) return prepend(slot);
-		
+		if (priority >= this.head.priority) return prepend(slot);
+
 		var wholeClone = new SlotList<TSlot, TListener>(head);
 		var subClone = wholeClone;
 		var current = tail;
-		
+
 		// Find a slot with lower priority and go in front of it.
 		while (current.nonEmpty)
 		{
-			if (priority > current.head.priority)
+			if (priority >= current.head.priority)
 			{
 				subClone.tail = current.prepend(slot);
 				return wholeClone;

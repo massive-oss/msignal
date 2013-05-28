@@ -330,9 +330,9 @@ class SignalTest
 	{
 		order = [];
 
-		signal0.addWithPriority(priority0, 0);
-		signal0.addWithPriority(priority1, 1);
-		signal0.addWithPriority(priority2, 2);
+		signal0.addWithPriority(item0, 0);
+		signal0.addWithPriority(item1, 1);
+		signal0.addWithPriority(item2, 2);
 		signal0.dispatch();
 
 		Assert.areEqual(2, order[0]);
@@ -340,14 +340,40 @@ class SignalTest
 		Assert.areEqual(0, order[2]);
 	}
 
+    @Test
+    public function add_with_same_no_priority_dispatches_order()
+    {
+        order = [];
+
+        signal0.add(item0);
+        signal0.add(item1);
+        signal0.add(item2);
+        signal0.dispatch();
+
+        assertLastAddedFirstDispatched();
+    }
+
+    @Test
+    public function add_with_same_priority_dispatches_in_same_order_as_no_priority()
+    {
+        order = [];
+
+        signal0.addWithPriority(item0, 1);
+        signal0.addWithPriority(item1, 1);
+        signal0.addWithPriority(item2, 1);
+        signal0.dispatch();
+
+        assertLastAddedFirstDispatched();
+    }
+
 	@Test
 	public function add_with_priority_dispatches_listeners_in_right_order_when_added_in_right_order()
 	{
 		order = [];
 		
-		signal0.addWithPriority(priority2, 2);
-		signal0.addWithPriority(priority1, 1);
-		signal0.addWithPriority(priority0, 0);
+		signal0.addWithPriority(item2, 2);
+		signal0.addWithPriority(item1, 1);
+		signal0.addWithPriority(item0, 0);
 		signal0.dispatch();
 		
 		Assert.areEqual(2, order[0]);
@@ -360,9 +386,9 @@ class SignalTest
 	{
 		order = [];
 
-		signal0.addOnceWithPriority(priority0, 0);
-		signal0.addOnceWithPriority(priority1, 1);
-		signal0.addOnceWithPriority(priority2, 2);
+		signal0.addOnceWithPriority(item0, 0);
+		signal0.addOnceWithPriority(item1, 1);
+		signal0.addOnceWithPriority(item2, 2);
 		signal0.dispatch();
 		
 		Assert.areEqual(2, order[0]);
@@ -370,9 +396,9 @@ class SignalTest
 		Assert.areEqual(0, order[2]);
 	}
 
-	function priority0(){order.push(0);}
-	function priority1(){order.push(1);}
-	function priority2(){order.push(2);}
+	function item0(){order.push(0);}
+	function item1(){order.push(1);}
+	function item2(){order.push(2);}
 
 	@Test
 	public function add_then_add_once_throws_exception()
@@ -393,6 +419,12 @@ class SignalTest
 	}
 
 	// helper
+
+    function assertLastAddedFirstDispatched():Void {
+        Assert.areEqual(2, order[0]);
+        Assert.areEqual(1, order[1]);
+        Assert.areEqual(0, order[2]);
+    }
 	
 	function dispatchSignal():Void 
 	{

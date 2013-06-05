@@ -9,3 +9,6 @@ TestSuite.hx
 /.temp
 /lib
 .DS_Store
+
+/msignal.iml
+/.idea/

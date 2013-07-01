@@ -134,7 +134,7 @@ class Slot1<TValue> extends Slot<Signal1<TValue>, TValue -> Void>
 	/**
 		Allows the slot to inject the argument to dispatch.
 	**/
-	public var param:Dynamic;
+	public var param:TValue;
 
 	public function new(signal:Signal1<TValue>, listener:TValue -> Void, once:Bool=false, priority:Int=0)
 	{
@@ -162,12 +162,12 @@ class Slot2<TValue1, TValue2> extends Slot<Signal2<TValue1, TValue2>, TValue1 ->
 	/**
 		Allows the slot to inject the first argument to dispatch.
 	**/
-	public var param1:Dynamic;
+	public var param1:TValue1;
 
 	/**
 		Allows the slot to inject the second argument to dispatch.
 	**/
-	public var param2:Dynamic;
+	public var param2:TValue2;
 
 	public function new(signal:Signal2<TValue1, TValue2>, listener:TValue1 -> TValue2 -> Void, once:Bool=false, priority:Int=0)
 	{

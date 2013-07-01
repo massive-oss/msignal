@@ -30,6 +30,8 @@ import msignal.EventSignal;
 
 class SlotTest
 {
+	inline static var NULL_VALUE = #if ((flash && !flash8) || cpp) 0 #else null #end;
+
 	public var signal:Signal0;
 	public var signal1:Signal1<Int>;
 	public var signal2:Signal2<Int, Int>;
@@ -430,9 +432,9 @@ class SlotTest
 		var slot1 = signal1.add(function(a){});
 		var slot2 = signal2.add(function(a, b){});
 
-		Assert.isNull(slot1.param);
-		Assert.isNull(slot2.param1);
-		Assert.isNull(slot2.param2);
+		Assert.areEqual(NULL_VALUE, slot1.param);
+		Assert.areEqual(NULL_VALUE, slot2.param1);
+		Assert.areEqual(NULL_VALUE, slot2.param2);
 	}
 	
 	@Test

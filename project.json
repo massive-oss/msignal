@@ -7,7 +7,7 @@
 		"dependencies":{},
 		"devDependencies":
 		{
-			"mtask":"1.x",
+			"mtask":"2.x",
 			"munit":"2.x",
 			"mcover":"2.x",
 			"hamcrest":"1.x"

@@ -166,7 +166,7 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		// Find a slot with lower priority and go in front of it.
 		while (current.nonEmpty)
 		{
-			if (priority >= current.head.priority)
+			if (priority > current.head.priority)
 			{
 				subClone.tail = current.prepend(slot);
 				return wholeClone;

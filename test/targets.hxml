@@ -1,5 +1,6 @@
 # Flash 9+
 -main TestMain
+-debug
 -lib munit
 -lib hamcrest
 
@@ -9,8 +10,10 @@
 -swf-version 9
 -swf bin/test/as3_test.swf
 --next
+
 #Flash 8
 -main TestMain
+-debug
 -lib munit
 -lib hamcrest
 
@@ -22,6 +25,7 @@
 --next
 # JavaScript
 -main TestMain
+-debug
 -lib munit
 -lib hamcrest
 
@@ -34,6 +38,7 @@
 
 # Neko
 -main TestMain
+-debug
 -lib munit
 -lib hamcrest
 
@@ -46,6 +51,7 @@
 
 ## cpp
 -main TestMain
+-debug
 -cpp bin/test/cpp_test
 
 -lib hamcrest

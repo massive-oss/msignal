@@ -5,7 +5,7 @@
 	"description": "A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.",
 	"contributors": ["massive"],
 	"releasenote": "Fixed slot priority bug.",
-	"version": "1.2.2",
+	"version": "1.2.3",
 	"url": "http://github.com/massiveinteractive/msignal",
 	"dependencies": 
 	{

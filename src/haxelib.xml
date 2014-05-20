@@ -1,5 +1,8 @@
-<project name="msignal" url="${url}" license="${license}">
-	<user name="${username}"/>
-	<description><![CDATA[${description}]]></description>
-	<version name="${version}"><![CDATA[${versionDescription}]]></version>${block}
+<project name="msignal" url="http://github.com/massiveinteractive/msignal" license="MIT">
+	<user name="massive"/>
+	<description><![CDATA[A Haxe port of the ActionScript 3 Signals library that leverages Haxe type parameters. Supports AVM1, AVM2, JavaScript, Neko and C++.]]></description>
+	<version name="1.2.3"><![CDATA[Fixed slot priority bug.]]></version>
+	<tag v="cross"/>
+	<tag v="utility"/>
+	<tag v="massive"/>
 </project>

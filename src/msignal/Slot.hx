@@ -100,7 +100,9 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 
 	function set_listener(value:TListener):TListener
 	{
+		#if debug
 		if (value == null) throw "listener cannot be null";
+		#end
 		return listener = value;
 	}
 }

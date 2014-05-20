@@ -33,6 +33,7 @@ typedef AnySignal = Signal<Dynamic, Dynamic>;
 	A Signal manages a list of listeners, which are executed when the signal is 
 	dispatched.
 **/
+@:keepSub
 class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 {
 	public var valueClasses:Array<Dynamic>;
@@ -40,7 +41,7 @@ class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	/**
 		The current number of listeners for the signal.
 	**/
-	public var numListeners(get_numListeners, null):Int;
+	public var numListeners(get, null):Int;
 	
 	var slots:SlotList<TSlot, TListener>;
 	var priorityBased:Bool;
@@ -151,17 +152,18 @@ class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		var existingSlot = slots.find(listener);
 		if (existingSlot == null) return true;
 
+		#if debug
 		if (existingSlot.once != once)
 		{
 			// If the listener was previously added, definitely don't add it again.
 			// But throw an exception if their once values differ.
 			throw "You cannot addOnce() then add() the same listener without removing the relationship first.";
 		}
+		#end
 		
 		return false; // Listener was already registered.
 	}
 
-	@:IgnoreCover
 	function createSlot(listener:TListener, once:Bool=false, priority:Int=0):TSlot
 	{
 		return null;

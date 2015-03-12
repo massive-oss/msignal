@@ -124,7 +124,7 @@ class Slot0 extends Slot<Signal0, Void -> Void>
 	{
 		if (!enabled) return;
 		if (once) remove();
-		listener();
+		if (listener != null) listener();
 	}
 }
 
@@ -152,7 +152,7 @@ class Slot1<TValue> extends Slot<Signal1<TValue>, TValue -> Void>
 		if (!enabled) return;
 		if (once) remove();
 		if (param != null) value1 = param;
-		listener(value1);
+		if (listener != null) listener(value1);
 	}
 }
 
@@ -189,6 +189,6 @@ class Slot2<TValue1, TValue2> extends Slot<Signal2<TValue1, TValue2>, TValue1 ->
 		if (param1 != null) value1 = param1;
 		if (param2 != null) value2 = param2;
 		
-		listener(value1, value2);
+		if (listener != null) listener(value1, value2);
 	}
 }

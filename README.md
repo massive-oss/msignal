@@ -1,3 +1,5 @@
+[![TravisCI Build Status](https://travis-ci.org/massiveinteractive/msignal.svg?branch=master)](https://travis-ci.org/massiveinteractive/msignal)
+
 ## Overview
 
 Signals are highly scalable and lightweight alternative to Events.

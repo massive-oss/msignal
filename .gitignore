@@ -14,3 +14,4 @@ TestSuite.hx
 /.idea/
 
 .haxelib
+/haxelib.json

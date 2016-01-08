@@ -173,6 +173,11 @@ class Signal<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	{
 		return slots.length;
 	}
+
+	public function dispatch()
+	{
+		throw "Abstract method AnySignal::dispath called";
+	}
 }
 
 /**
@@ -188,7 +193,7 @@ class Signal0 extends Signal<Slot0, Void -> Void>
 	/**
 		Executes the signals listeners with no arguements.
 	**/
-	public function dispatch()
+	override public function dispatch()
 	{
 		var slotsToProcess = slots;
 		
@@ -218,7 +223,7 @@ class Signal1<TValue> extends Signal<Slot1<TValue>, TValue -> Void>
 	/**
 		Executes the signals listeners with one arguement.
 	**/
-	public function dispatch(value:TValue)
+	override public function dispatch(value:TValue)
 	{
 		var slotsToProcess = slots;
 		
@@ -248,7 +253,7 @@ class Signal2<TValue1, TValue2> extends Signal<Slot2<TValue1, TValue2>, TValue1 
 	/**
 		Executes the signals listeners with two arguements.
 	**/
-	public function dispatch(value1:TValue1, value2:TValue2)
+	override public function dispatch(value1:TValue1, value2:TValue2)
 	{
 		var slotsToProcess = slots;
 		

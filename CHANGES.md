@@ -1,3 +1,7 @@
+## 1.2.4
+
+- Parameters are optional (marked with ?), so the code can be compiled on Haxe 3.2 and newer with Mockatoo.
+
 ## 1.2.3
 
 - Support DCE by adding :keep meta, only assert in debug

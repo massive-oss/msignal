@@ -70,7 +70,7 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 
 	var signal:TSignal;
 	
-	function new(signal:TSignal, listener:TListener, once:Bool=false, priority:Int=0)
+	function new(signal:TSignal, listener:TListener, ?once:Bool=false, ?priority:Int=0)
 	{
 		this.signal = signal;
 		this.listener = listener;
@@ -112,7 +112,7 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 **/
 class Slot0 extends Slot<Signal0, Void -> Void>
 {
-	public function new(signal:Signal0, listener:Void -> Void, once:Bool=false, priority:Int=0)
+	public function new(signal:Signal0, listener:Void -> Void, ?once:Bool=false, ?priority:Int=0)
 	{
 		super(signal, listener, once, priority);
 	}
@@ -138,7 +138,7 @@ class Slot1<TValue> extends Slot<Signal1<TValue>, TValue -> Void>
 	**/
 	public var param:TValue;
 
-	public function new(signal:Signal1<TValue>, listener:TValue -> Void, once:Bool=false, priority:Int=0)
+	public function new(signal:Signal1<TValue>, listener:TValue -> Void, ?once:Bool=false, ?priority:Int=0)
 	{
 		super(signal, listener, once, priority);
 	}
@@ -171,7 +171,7 @@ class Slot2<TValue1, TValue2> extends Slot<Signal2<TValue1, TValue2>, TValue1 ->
 	**/
 	public var param2:TValue2;
 
-	public function new(signal:Signal2<TValue1, TValue2>, listener:TValue1 -> TValue2 -> Void, once:Bool=false, priority:Int=0)
+	public function new(signal:Signal2<TValue1, TValue2>, listener:TValue1 -> TValue2 -> Void, ?once:Bool=false, ?priority:Int=0)
 	{
 		super(signal, listener, once, priority);
 	}

@@ -123,7 +123,7 @@ class EventSignal<TTarget, TType>
 	/**
 		Internal method used to create the slot type for this signal.
 	**/
-	override function createSlot(listener:Event<TTarget, TType> -> Void, once:Bool=false, priority:Int=0)
+	override function createSlot(listener:Event<TTarget, TType> -> Void, ?once:Bool=false, ?priority:Int=0)
 	{
 		return new EventSlot(this, cast listener, once, priority);
 	}
@@ -139,7 +139,7 @@ class EventSlot<TValue> extends Slot<Dynamic, Event<Dynamic, TValue> -> Void>
 	**/
 	var filterType:Null<TValue>;
 
-	public function new(signal:Dynamic, listener:Event<Dynamic, TValue> -> Void, once:Bool=false, priority:Int=0)
+	public function new(signal:Dynamic, listener:Event<Dynamic, TValue> -> Void, ?once:Bool=false, ?priority:Int=0)
 	{
 		super(signal, listener, once, priority);
 	}

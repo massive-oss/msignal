@@ -30,7 +30,7 @@ import msignal.EventSignal;
 
 class SlotTest
 {
-	inline static var NULL_VALUE = #if (flash && !flash8) 0 #else null #end;
+	inline static var NULL_VALUE = #if ((flash && !flash8) || cpp) 0 #else null #end;
 
 	public var signal:Signal0;
 	public var signal1:Signal1<Int>;

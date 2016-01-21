@@ -47,7 +47,7 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 		@param head The first slot in the list.
 		@param tail A list containing all slots except head.
 	**/
-	public function new(head:TSlot, tail:SlotList<TSlot, TListener>=null)
+	public function new(head:TSlot, ?tail:SlotList<TSlot, TListener>=null)
 	{
 		nonEmpty = false;
 		

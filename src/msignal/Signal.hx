@@ -221,11 +221,15 @@ class Signal1<TValue> extends Signal<Slot1<TValue>, TValue -> Void>
 	public function dispatch(value:TValue)
 	{
 		var slotsToProcess = slots;
-		
-		while (slotsToProcess.nonEmpty)
+		if (slotsToProcess != null)
 		{
-			slotsToProcess.head.execute(value);
-			slotsToProcess = slotsToProcess.tail;
+			while (slotsToProcess.nonEmpty)
+			{
+				if (slotsToProcess.head != null)
+					slotsToProcess.head.execute(value);
+
+				slotsToProcess = slotsToProcess.tail;
+			}
 		}
 	}
 

@@ -77,7 +77,7 @@ class SlotList<TSlot:Slot<Dynamic, Dynamic>, TListener>
 	/**
 		The number of slots in the list.
 	**/
-	public var length(get_length, null):Int;
+	public var length(get, null):Int;
 	function get_length():Int
 	{
 		if (!nonEmpty) return 0;

@@ -44,10 +44,10 @@ class Slot<TSignal:Signal<Dynamic, TListener>, TListener>
 	**/
 	#if cpp
 	#if haxe3 @:isVar #end
-	public var listener(get_listener, set_listener):TListener;
+	public var listener(get, set):TListener;
 	#else
 	#if haxe3 @:isVar #end
-	public var listener(default, set_listener):TListener;
+	public var listener(default, set):TListener;
 	#end
 	
 

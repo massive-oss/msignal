@@ -291,7 +291,7 @@ class SignalTest
 	
 	function checkDate(date:Date):Void
 	{
-		Assert.isTrue(Std.is(date, Date));
+		Assert.isTrue(Std.isOfType(date, Date));
 	}
 	
 	@Test

@@ -99,7 +99,7 @@ class EventSignal<TTarget, TType>
 		{
 			currentTarget = Reflect.field(currentTarget, "parent");
 			
-			if (Std.is(currentTarget, EventDispatcher))
+			if (Std.isOfType(currentTarget, EventDispatcher))
 			{
 				event.currentTarget = currentTarget;
 				var dispatcher = cast(currentTarget, EventDispatcher<Dynamic>);
